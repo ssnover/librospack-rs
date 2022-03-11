@@ -1,0 +1,15 @@
+[package]
+name = "rospack_rs"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "rospack"
+path = "src/main.rs"
+
+[lib]
+name = "librospack"
+path = "src/lib.rs"
+
+[dependencies]
+clap = { version = "3.1", features = ["derive"] }
