@@ -51,6 +51,17 @@ fn packages_from_path(mut path: std::path::PathBuf) -> std::io::Result<Vec<Packa
             })
         } else {
             // No file here, we'll have to go deeper
+            assert!(path.pop());
+            for subdir in std::fs::read_dir(path)
+                .unwrap()
+                .filter(|entry| match entry {
+                    Ok(entry) => entry.path().as_path().is_dir(),
+                    Err(_err) => false,
+                })
+                .map(|entry| entry.unwrap())
+            {
+                found_packages = [found_packages, packages_from_path(subdir.path())?].concat()
+            }
         }
     } else {
         eprintln!("{} is not a directory", path.to_string_lossy())
