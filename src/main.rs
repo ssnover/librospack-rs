@@ -18,7 +18,8 @@ fn main() {
     match options.cmd {
         SubCommand::List => {
             println!("List called!");
-            let packages = crawl(get_search_paths());
+            let mut packages = crawl(get_search_paths());
+            packages.sort_by(|a, b| a.name.partial_cmp(&b.name).unwrap());
             for pkg in packages {
                 println!("{} {}", pkg.name, pkg.path.to_string_lossy());
             }
