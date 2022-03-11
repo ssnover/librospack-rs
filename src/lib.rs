@@ -9,9 +9,13 @@ const ROS_PACKAGE_PATH_ENV_VAR: &'static str = "ROS_PACKAGE_PATH";
 
 pub fn get_search_paths() -> Vec<std::path::PathBuf> {
     if let Ok(paths) = std::env::var(ROS_PACKAGE_PATH_ENV_VAR) {
+        #[cfg(unix)]
+        let separator = ":";
+        #[cfg(windows)]
+        let separator = ";";
+
         paths
-            .split(std::path::MAIN_SEPARATOR)
-            .into_iter()
+            .split(separator)
             .map(|path| std::path::PathBuf::from(path))
             .collect::<Vec<std::path::PathBuf>>()
     } else {
